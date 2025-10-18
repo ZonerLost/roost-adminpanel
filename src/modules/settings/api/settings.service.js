@@ -70,14 +70,32 @@ function setMockStore(next) {
   localStorage.setItem("__settings_store__", JSON.stringify(next, null, 2));
 }
 
+function enableRuntimeMock() {
+  try {
+    localStorage.setItem("__use_mock__", "1");
+    console.warn(
+      "Settings service: enabling runtime mock override (localStorage __use_mock__=1)"
+    );
+  } catch (e) {
+    void e;
+  }
+}
+
 // ------- Public API ---------------------------------------------------------
 export async function getMe() {
   if (USE_MOCK) {
     await delay();
     return getMockStore().me;
   }
-  const { data } = await api.get("/me");
-  return data;
+  try {
+    const { data } = await api.get("/me");
+    return data;
+  } catch {
+    // If the backend is missing (404) or network fails, enable runtime mock so the UI recovers
+    enableRuntimeMock();
+    await delay();
+    return getMockStore().me;
+  }
 }
 
 export async function updateMe(patch) {
@@ -110,8 +128,14 @@ export async function getSettings() {
     await delay();
     return getMockStore().settings;
   }
-  const { data } = await api.get("/settings");
-  return data;
+  try {
+    const { data } = await api.get("/settings");
+    return data;
+  } catch {
+    enableRuntimeMock();
+    await delay();
+    return getMockStore().settings;
+  }
 }
 
 export async function updateSettings(patch) {

@@ -5,7 +5,7 @@ import {
 } from "../../libs/framer-motion-shim";
 import { useNavigate } from "react-router-dom";
 import { PATHS } from "../../routes/paths";
-import { signIn } from "./api/auth.service";
+import { signIn, setMockOverride } from "./api/auth.service";
 import { MdMail, MdLock, MdVisibility, MdVisibilityOff } from "react-icons/md";
 import ThemeToggle from "../../components/common/ThemeToggle";
 
@@ -54,6 +54,7 @@ export default function Login() {
   const [showPw, setShowPw] = useState(false);
   const [busy, setBusy] = useState(false);
   const [err, setErr] = useState("");
+  const [mocking, setMocking] = useState(false);
 
   async function submit(e) {
     e?.preventDefault();
@@ -66,6 +67,18 @@ export default function Login() {
       setErr(e?.message || "Invalid credentials");
     } finally {
       setBusy(false);
+    }
+  }
+
+  function toggleMock() {
+    const next = !mocking;
+    try {
+      setMockOverride(next);
+      setMocking(next);
+      // reload to pick up change in environments relying on compile-time flags
+      window.location.reload();
+    } catch {
+      setMocking(next);
     }
   }
 
@@ -119,6 +132,23 @@ export default function Login() {
               </div>
 
               <form onSubmit={submit} className="space-y-4">
+                <div className="text-xs text-muted flex items-center justify-between">
+                  <div>
+                    API:{" "}
+                    <code className="text-xxs">
+                      {import.meta?.env?.VITE_API_URL || "/api"}
+                    </code>
+                  </div>
+                  <div>
+                    <button
+                      type="button"
+                      className="text-sm text-muted"
+                      onClick={toggleMock}
+                    >
+                      {mocking ? "Disable mock" : "Force mock"}
+                    </button>
+                  </div>
+                </div>
                 {err && <div className="text-danger text-sm">{err}</div>}
 
                 <IconInput
