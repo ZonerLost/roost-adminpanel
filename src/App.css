@@ -1,0 +1,30 @@
+/* App shell helpers — optional but nice for consistent page rhythm */
+.app-shell {
+  min-height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.container-xl {
+  width: 100%;
+  max-width: 1280px;
+  margin: 0 auto;
+  padding-left: 16px;
+  padding-right: 16px;
+}
+
+.page {
+  flex: 1 1 auto;
+  padding: 20px 0 32px;
+}
+
+/* Subtle card hover used on lists */
+.card.hoverable { transition: transform .12s ease, box-shadow .2s ease; }
+.card.hoverable:hover {
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-1);
+}
+
+/* Simple fade for Suspense fallback */
+.fade-in { animation: fade-in .18s ease-out both; }
+@keyframes fade-in { from { opacity: 0 } to { opacity: 1 } }

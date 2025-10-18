@@ -1,0 +1,174 @@
+@import "tailwindcss";
+
+:root {
+  --bg: #0b0c10;
+  --surface: #111318;
+  --card: #141720;
+  --glass: rgba(255,255,255,0.06);
+  --text: #e8ebf0;
+  --muted: #9aa3b2;
+  --border: #242a36;
+
+  --primary: #fe5e29;
+  --success: #16a34a;
+  --warning: #f59e0b;
+  --danger:  #ef4444;
+
+  --ring: rgba(254, 94, 41, 0.35);
+  --shadow-1: 0 1px 2px rgba(0,0,0,.25), 0 8px 24px rgba(0,0,0,.25);
+  --shadow-soft: 0 1px 2px rgba(0,0,0,.15), 0 6px 16px rgba(0,0,0,.18);
+}
+
+html.dark {
+  /* same palette (app defaults to dark), override here if you keep a light shell */
+}
+
+html:not(.dark) {
+  --bg: #f7f8fb;
+  --surface: #ffffff;
+  --card: #ffffff;
+  --glass: rgba(255,255,255,.7);
+  --text: #0f172a;
+  --muted: #5b6474;
+  --border: #e5e7eb;
+
+  --ring: rgba(254, 94, 41, 0.45);
+}
+
+/* ---------- Base ---------- */
+* { box-sizing: border-box; }
+html, body, #root { height: 100%; }
+body {
+  margin: 0;
+  color: var(--text);
+  background: radial-gradient(1200px 800px at 10% -10%, rgba(254,94,41,.15), transparent 40%),
+              radial-gradient(1200px 800px at 110% 10%, rgba(0, 160, 255, .08), transparent 40%),
+              var(--bg);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Scrollbar (webkit) */
+*::-webkit-scrollbar { height: 10px; width: 10px; }
+*::-webkit-scrollbar-thumb { background: var(--border); border-radius: 8px; }
+*::-webkit-scrollbar-track { background: transparent; }
+
+/* ---------- Typography helpers ---------- */
+.text-muted { color: var(--muted) !important; }
+.text-text { color: var(--text) !important; }
+
+/* ---------- Surfaces ---------- */
+.card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  box-shadow: var(--shadow-soft);
+}
+
+.glass {
+  background: var(--glass);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+/* ---------- Controls ---------- */
+.input {
+  width: 100%;
+  height: 40px;
+  border-radius: 10px;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--text);
+  padding: 0 12px;
+  transition: box-shadow .2s, border-color .2s, background .2s;
+}
+.input:focus {
+  outline: none;
+  border-color: var(--primary);
+  box-shadow: 0 0 0 4px var(--ring);
+}
+.input[disabled] { opacity: .6; cursor: not-allowed; }
+textarea.input { min-height: 96px; padding: 10px 12px; }
+
+/* Buttons */
+.btn, .btn-ghost {
+  height: 36px;
+  padding: 0 14px;
+  border-radius: 10px;
+  font-weight: 600;
+  font-size: 14px;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  transition: transform .02s ease, box-shadow .2s ease, background .2s ease, color .2s ease;
+}
+.btn {
+  color: #fff;
+  background: var(--primary);
+  border: 1px solid transparent;
+  box-shadow: 0 8px 20px rgba(254,94,41,.25);
+}
+.btn:hover { filter: brightness(1.05); }
+.btn:active { transform: translateY(1px); }
+.btn[disabled] { opacity: .6; cursor: not-allowed; }
+
+.btn-ghost {
+  color: var(--text);
+  background: transparent;
+  border: 1px solid var(--border);
+}
+.btn-ghost:hover { background: rgba(255,255,255,.06); }
+
+/* Badges */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 2px 8px;
+  border-radius: 999px;
+  font-size: 12px;
+  line-height: 1.2;
+  border: 1px solid var(--border);
+  background: rgba(255,255,255,.04);
+}
+
+/* Utility shims for classnames used in modules */
+.rounded-pill { border-radius: 999px; }
+.border { border: 1px solid var(--border); }
+.border-top { border-top: 1px solid var(--border); }
+.border-border { border-color: var(--border) !important; }
+.bg-border { background: var(--border) !important; }
+
+/* Best-effort color shims if Tailwind color tokens aren’t configured */
+[class*="border-border"] { border-color: var(--border) !important; }
+[class*="bg-border"]     { background-color: var(--border) !important; }
+
+/* Line clamp (if not using Tailwind plugin) */
+.line-clamp-1 {
+  display: -webkit-box; -webkit-line-clamp: 1; -webkit-box-orient: vertical; overflow: hidden;
+}
+
+/* Drawer/overlay z-index helpers */
+.overlay { position: fixed; inset: 0; background: rgba(0,0,0,.4); }
+
+/* Table base spacing (works with Tailwind table utilities) */
+table { border-collapse: separate; border-spacing: 0; }
+thead th { border-bottom: 1px solid var(--border); }
+tbody tr { background-clip: padding-box; }
+
+/* Tiny icon color helpers */
+.text-success { color: var(--success); }
+.text-danger { color: var(--danger); }
+.text-warning { color: var(--warning); }
+.bg-success\/20 { background: color-mix(in oklab, var(--success) 20%, transparent); }
+.bg-danger\/20  { background: color-mix(in oklab, var(--danger) 20%, transparent); }
+.border-success\/30 { border-color: color-mix(in oklab, var(--success) 30%, transparent); }
+.border-danger\/30  { border-color: color-mix(in oklab, var(--danger) 30%, transparent); }
+
+/* Prefer-reduced-motion */
+@media (prefers-reduced-motion: reduce) {
+  * { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; scroll-behavior: auto !important; }
+}
