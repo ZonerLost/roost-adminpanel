@@ -1,7 +1,8 @@
 // Toggle mock with VITE_USE_MOCK=1; set VITE_API_URL for real backend.
 import axios from "axios";
 
-const USE_MOCK = import.meta?.env?.VITE_USE_MOCK === "1";
+export const USE_MOCK =
+  import.meta?.env?.VITE_USE_MOCK === "1" || !import.meta?.env?.VITE_API_URL;
 
 const api = axios.create({
   baseURL: import.meta?.env?.VITE_API_URL || "/api",

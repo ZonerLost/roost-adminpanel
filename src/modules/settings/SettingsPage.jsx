@@ -8,6 +8,7 @@ import {
   updateMe,
   updateSettings,
   testNotification,
+  USE_MOCK,
 } from "./api/settings.service";
 import SectionCard from "./components/SectionCard";
 import SkeletonBlock from "./components/SkeletonBlock";
@@ -38,6 +39,7 @@ export default function SettingsPage() {
   // ephemeral UI
   const [saving, setSaving] = useState(false);
   const [msg, setMsg] = useState("");
+  const runningMock = USE_MOCK;
 
   async function fetchAll() {
     setLoading(true);
@@ -77,6 +79,15 @@ export default function SettingsPage() {
       setMe(next);
       note("Saved");
     } finally {
+      {
+        runningMock && (
+          <div className="p-3 rounded-md bg-yellow-50 border border-yellow-200 text-yellow-800 text-sm">
+            Note: the app is running in <strong>mock mode</strong>. No backend
+            is configured (VITE_API_URL is empty). To use a real API, set
+            VITE_API_URL in your deployment environment.
+          </div>
+        );
+      }
       setSaving(false);
     }
   }
