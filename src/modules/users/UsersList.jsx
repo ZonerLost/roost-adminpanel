@@ -102,7 +102,6 @@ export default function UsersList() {
           </button>
         </div>
         <div className="flex items-center gap-2">
-          <ThemeToggle />
           <button className="btn" onClick={openCreate}>
             Add User
           </button>

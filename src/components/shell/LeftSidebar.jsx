@@ -1,5 +1,5 @@
 import React from "react";
-import { NavLink, Link } from "react-router-dom";
+import { NavLink, Link, useNavigate } from "react-router-dom";
 import {
   MdDashboard,
   MdPeople,
@@ -26,13 +26,15 @@ export default function LeftSidebar({
   onClose,
   logoSrc = "/logo.png",
 }) {
+  const navigate = useNavigate();
   async function handleLogout() {
     try {
       // await signOut();
     } finally {
       localStorage.clear();
       sessionStorage.clear();
-      window.location.href = PATHS.AUTH.LOGIN;
+      // Use client-side navigation to avoid a full page reload which may 404 on static hosts
+      navigate(PATHS.AUTH.LOGIN);
     }
   }
 
